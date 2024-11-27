@@ -9,7 +9,10 @@ const h_crud        = require('../../helpers/crud');
 // SERVICES
 // =============================================================================
 const { 
-    backInventoryTransactionService
+    backInventoryTransactionService,
+    backInventoryVariantService,
+    backProductService,
+    backProductVariantsService
 } = require('../../services/manager');
 // =============================================================================
 // REST FUNCTIONS
@@ -75,31 +78,63 @@ async function createDocument(req, res){
     
     try {
         let format_data = [
-            h_format.objectValidField( 'name'           , h_validation.evalString( req.body.name, '' )          , h_format.fields.types.string.name     , h_format.fields.types.string.operators.not_equal      , '' ),
-            h_format.objectValidField( 'first_name'     , h_validation.evalString( req.body.first_name, '' )    , h_format.fields.types.string.name     , h_format.fields.types.string.operators.not_equal      , '' ),
-            h_format.objectValidField( 'last_name'      , h_validation.evalString( req.body.last_name, '' )     , h_format.fields.types.string.name     , h_format.fields.types.string.operators.not_equal      , '' ),
-            h_format.objectValidField( 'phone'          , h_validation.evalString( req.body.phone, '' )         , h_format.fields.types.string.name     , h_format.fields.types.string.operators.not_equal      , '' ),
-            h_format.objectValidField( 'address_1'      , h_validation.evalString( req.body.address_1, '' )     , h_format.fields.types.string.name     , h_format.fields.types.string.operators.not_equal      , '' ),
-            h_format.objectValidField( 'address_2'      , h_validation.evalString( req.body.address_2, '' )     , h_format.fields.types.string.name     , h_format.fields.types.string.operators.not_equal      , '' ),
-            h_format.objectValidField( 'country'        , h_validation.evalString( req.body.country, '' )       , h_format.fields.types.string.name     , h_format.fields.types.string.operators.not_equal      , '' ),
-            h_format.objectValidField( 'country_code'   , h_validation.evalString( req.body.country_code, '' )  , h_format.fields.types.string.name     , h_format.fields.types.string.operators.not_equal      , '' ),
-            h_format.objectValidField( 'state'          , h_validation.evalString( req.body.state, '' )         , h_format.fields.types.string.name     , h_format.fields.types.string.operators.not_equal      , '' ),
-            h_format.objectValidField( 'state_code'     , h_validation.evalString( req.body.state_code, '' )    , h_format.fields.types.string.name     , h_format.fields.types.string.operators.not_equal      , '' ),
-            h_format.objectValidField( 'city'           , h_validation.evalString( req.body.city, '' )          , h_format.fields.types.string.name     , h_format.fields.types.string.operators.not_equal      , '' ),
-            h_format.objectValidField( 'zip'            , h_validation.evalString( req.body.zip, '' )           , h_format.fields.types.string.name     , h_format.fields.types.string.operators.not_equal      , '' ),
+            h_format.objectValidField( 'inventory_item'     , h_validation.evalObjectId( req.body.inventory_item, null ), h_format.fields.types.string.name     , h_format.fields.types.string.operators.not_equal      , null ),
+            h_format.objectValidField( 'quantity'           , h_validation.evalInt( req.body.quantity, 0 )              , h_format.fields.types.number.name     , h_format.fields.types.number.operators.not_equal      , 0 ),
+            h_format.objectValidField( 'transaction_type'   , h_validation.evalString( req.body.transaction_type, null ), h_format.fields.types.string.name     , h_format.fields.types.string.operators.not_equal      , null )
         ];
         format_data = h_validation.evalFields( req.body, format_data );
         
         if( format_data.is_valid ){
             
-            format_data.body_object.handle = format_data.body_object.name != null ? h_format.slug( format_data.body_object.name ) : null;
-            
-            let create_document = await h_crud.createDocument( 'Inventory Transaction', backInventoryTransactionService, { name: format_data.body_object.name }, format_data.body_object, false );
+            let find_query = h_format.findQuery( format_data.body_object.inventory_item );
+            let create_document = await h_crud.createDocument( 'Inventory Transaction', backInventoryTransactionService, find_query, format_data.body_object, true );
             if (create_document.success ) {
                 
-                res.status(200).json( create_document );
+                let find_inventory_variant = await h_crud.findDocument('Inventory Variant', backInventoryVariantService, { _id: create_document.body.inventory_item } );
+                if ( find_inventory_variant.success) { 
+                    
+                    let find_product = await h_crud.findDocument('Product', backProductService, { variants: { $elemMatch: { $eq: find_inventory_variant.body.variant._id.toString() } } } );
+                    if( find_product.success ) {
+                        
+                        let new_quantity    = ( format_data.body_object.transaction_type == 'in' ? format_data.body_object.quantity : format_data.body_object.quantity * -1 );
+                        let variant_totals  = { total_stock: 0, total_weight: 0 };
+                        for (const item_variant of find_product.body.variants) {
+                            
+                            let acum_quntity = 0;
+                            for (const item_inventory of item_variant.inventory_items) {
+                                
+                                if( !moment( item_inventory.expired_at ).isBefore( moment() ) ){
+                                    
+                                    acum_quntity += item_inventory.quantity;
+                                }
+                            }
+                            variant_totals.total_stock      += acum_quntity + ( find_inventory_variant.body.variant._id.toString() == item_variant._id.toString() ? new_quantity : 0 );
+                            variant_totals.total_weight     += ( acum_quntity * item_variant.weight ) + ( find_inventory_variant.body.variant._id.toString() == item_variant._id.toString() ? ( new_quantity * item_variant.weight ) : 0 );
+                            await h_crud.updateDocument('Product Variant', backProductVariantsService, { _id: item_variant._id.toString() }, { inventory_quantity: acum_quntity });
+                        }
+                        let update_inventory_variant    = await h_crud.updateDocument('Inventory Variant', backInventoryVariantService, { _id: format_data.body_object.inventory_item }, { quantity: ( find_inventory_variant.body.quantity + new_quantity ) });
+                        let update_product              = await h_crud.updateDocument('Product', backProductService, { _id: find_product.body._id }, { total_stock: variant_totals.total_stock, total_weight: variant_totals.total_weight });
+                        
+                        if ( update_product.success && update_inventory_variant.success ) {
+                            
+                            res.status(200).json( create_document );
+                        }
+                        else {
+                            
+                            let field_errors = [ update_product, update_inventory_variant ].filter( (item) => !item.success );
+                            res.status(400).send( h_response.request( false, field_errors, 400, 'Error: Validate Data', 'Error in process' ) );
+                        }
+                    }
+                    else{
+                        
+                        res.status(400).send( find_product );
+                    }
+                }
+                else {
+                    res.status(400).send( find_inventory_variant );
+                }
             }
-            else {
+            else{
                 
                 res.status(400).send( create_document );
             }
@@ -119,7 +154,7 @@ async function createDocument(req, res){
 * @param {*} res 
 */
 async function updateDocument(req, res){
-
+    
     try {
         let format_data = [
             h_format.objectValidField( 'id_handle'      , h_validation.evalString( req.param.id_handle )        , h_format.fields.types.string.name     , h_format.fields.types.string.operators.not_equal      , '' ),

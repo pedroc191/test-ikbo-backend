@@ -21,7 +21,7 @@ const h_array               = require('./array');
 function findQuery( field_value, extra_field = 'handle' ){
     
     let find_query  = { status: 'active' }
-    let object_id   = new mongoose.Types.ObjectId.createFromHexString( field_value );
+    let object_id   = field_value.toString().length == 24 ? new mongoose.Types.ObjectId( field_value ) : '';
     if( mongoose.isValidObjectId( field_value ) && object_id && object_id.toString() == field_value ){
         
         find_query._id = field_value;
@@ -295,10 +295,7 @@ module.exports = {
     slug,
     objectValidField,
     dbDate,
-    phoneNumber,
-    numberString,
     currencyObject,
-    calcDiscountPrice,
     randomNumber,
     fields: {
         types: {

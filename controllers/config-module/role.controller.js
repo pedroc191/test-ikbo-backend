@@ -74,11 +74,10 @@ async function listDocuments(req, res){
 async function createDocument(req, res){
     
     try {
+
         let format_data = [
-            h_format.objectValidField( 'dashboard'  , h_validation.evalObjectId( req.param.id )             , h_format.fields.types.string.name , h_format.fields.types.string.operators.not_equal                  , '' ),
             h_format.objectValidField( 'name'       , h_validation.evalString( req.body.name, '' )          , h_format.fields.types.string.name , h_format.fields.types.string.operators.not_equal                  , '' ),
             h_format.objectValidField( 'endpoints'  , h_validation.evalArray( req.body.endpoints, [] )      , h_format.fields.types.array.name  , h_format.fields.types.array.operators.length_greater_than_or_equal, 0 ),
-            h_format.objectValidField( 'menu_tree'  , h_validation.evalString( req.body.menu_tree, [] )     , h_format.fields.types.array.name  , h_format.fields.types.array.operators.length_greater_than_or_equal, 0 ),
             h_format.objectValidField( 'test_mode'  , h_validation.evalBoolean( req.body.test_mode, false ) , h_format.fields.types.boolean.name, h_format.fields.types.boolean.operators.not_equal                 , null )
         ];
         format_data = h_validation.evalFields( req.body, format_data );
@@ -87,7 +86,7 @@ async function createDocument(req, res){
             
             format_data.body_object.handle = format_data.body_object.name != null ? h_format.slug( format_data.body_object.name ) : null;
             
-            let create_document = await h_crud.createDocument( 'Role', backRoleService, { name: format_data.body_object.name }, format_data.body_object, false );
+            let create_document = await h_crud.createDocument( 'Role', backRoleService, { handle: format_data.body_object.handle }, format_data.body_object, true );
             if (create_document.success ) {
                 
                 res.status(200).json( create_document );

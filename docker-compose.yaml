@@ -1,0 +1,11 @@
+version: '5'
+services:
+  db:
+    image: mongo:5.0.0
+    restart: always
+    environment:
+      MONGODB_DATABASE: test-ikbo
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data-layer/data-base/mongo-test-ikbo:/data/db

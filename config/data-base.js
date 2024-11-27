@@ -18,12 +18,9 @@ module.exports = {
             
             mongoose.set('strictQuery', false);
             mongoose.connect( url_DB, {
-                keepAlive: true,
                 socketTimeoutMS: 1800000,
                 serverSelectionTimeoutMS: 1800000,
                 connectTimeoutMS: 1800000,
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
                 autoIndex: true
             });
         },
@@ -34,12 +31,9 @@ module.exports = {
         createNewConnectionDB: function( url_DB ){
             
             mongoose.createConnection( url_DB, {
-                keepAlive: true,
                 socketTimeoutMS: 1800000,
                 serverSelectionTimeoutMS: 1800000,
                 connectTimeoutMS: 1800000,
-                useNewUrlParser: true,
-                useUnifiedTopology: true,
                 autoIndex: true
             });
         },

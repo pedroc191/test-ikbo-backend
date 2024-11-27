@@ -30,7 +30,7 @@ module.exports = {
     // =============================================================================
     // INVENTORY MODULE - POPULATES
     // =============================================================================
-    backInventoryLocationService    : new crudLayer( require('../models/config-module/inventory-location.model')        , inventoryPopulate.back_inventory_location_populate ),
+    backInventoryLocationService    : new crudLayer( require('../models/inventory-module/inventory-location.model')     , inventoryPopulate.back_inventory_location_populate ),
     backInventoryVariantService     : new crudLayer( require('../models/inventory-module/inventory-variant.model')      , inventoryPopulate.back_inventory_variant_populate ),
     backInventoryTransactionService : new crudLayer( require('../models/inventory-module/inventory-transaction.model')  , inventoryPopulate.back_inventory_transaction_populate ),
     // =============================================================================

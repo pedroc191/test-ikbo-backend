@@ -47,13 +47,13 @@ function numberField( valid_compare, data_value ){
         case "not_equal":
         return valid_compare.value != data_value;
         case "greater_than":
-        return valid_compare.value > data_value;
+        return data_value > valid_compare.value;
         case "greater_than_or_equal":
-        return valid_compare.value >= data_value;
+        return data_value >= valid_compare.value;
         case "less_than":
-        return valid_compare.value < data_value;
+        return data_value < valid_compare.value;
         case "less_than_or_equal":
-        return valid_compare.value <= data_value;
+        return data_value <= valid_compare.value;
         default:
         return false;
     }
@@ -219,7 +219,7 @@ function evalFields( req_data, valid_data ){
             message     : `Field: ${ current_item.field } is ${ result_valid ? 'valid' : 'invalid' }`
         });
         previous_item.body_object[current_item.field] = current_item.value;
-        previous_item.count_valid += result_valid ? 0 : 1;
+        previous_item.valid_count += result_valid ? 0 : 1;
         
         return previous_item;
     }, { valid_count: 0, valid_fields: [], body_object: {} });
@@ -331,7 +331,7 @@ function evalInt( number, default_value = 0 ){
 */
 function evalObjectId( id, default_value = null ){
     
-    let object_id   = id ? new mongoose.Types.ObjectId.createFromHexString( id ) : "";
+    let object_id   = id && id.toString().length == 24 ? new mongoose.Types.ObjectId( id ) : '';
     if( id != null && mongoose.isValidObjectId( id ) && object_id && object_id.toString() == id.toString() ){
         
         return id.toString();

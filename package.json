@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+		"start": "node ./bin/api",
+		"api": "node ./bin/api",
+		"job": "node ./bin/job"
   },
   "dependencies": {
     "debug": "~2.6.9",

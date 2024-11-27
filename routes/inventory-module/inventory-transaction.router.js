@@ -23,8 +23,6 @@ app.post('/list', inventoryTransactionController.post.listDocuments);
 
 app.post('/create', inventoryTransactionController.post.createDocument);
 
-app.put('/update', inventoryTransactionController.put.updateDocument);
-
 app.put('/update-status', inventoryTransactionController.put.updateDocumentStatus);
 
 app.delete('/delete', inventoryTransactionController.delete.deleteDocument);

@@ -1,12 +1,12 @@
 let back_product_populate           = [
     { path: 'variants', populate: [
-        { path: 'inventory_variants', populate: [
+        { path: 'inventory_items', populate: [
             { path: 'location', match: { status: 'active', deleted: false } }
         ], match: { status: 'active', deleted: false }}
     ], match: { status: 'active', deleted: false } }
 ];
 let back_product_variant_populate   = [
-    { path: 'inventory_variants', populate: [
+    { path: 'inventory_items', populate: [
         { path: 'location', match: { status: 'active', deleted: false } }
     ], match: { status: 'active', deleted: false }}
 ];

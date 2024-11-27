@@ -44,8 +44,8 @@ let productSchema = mongoose.Schema({
         min_price: { type: Number, default: 0 },
         max_price: { type: Number, default: 0 }
     }, default: { min_price: 0, max_price: 0 } },
+    currency_code       : { type: String                            , default: 'COP' },
     expired_at          : { type: Date                              , default: Date.now },
-    is_expired          : { type: Boolean                           , default: false },
 
     created_at          : { type: Date                              , default: Date.now }, 
     updated_at          : { type: Date                              , default: Date.now }, 

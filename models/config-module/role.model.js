@@ -3,7 +3,7 @@ const mongoose      = require('mongoose');
 let roleSchema = mongoose.Schema({
     name        : { type: String                            , default: null },
     handle      : { type: String                            , default: null },
-    endpoinds   : [{ type: mongoose.Schema.Types.ObjectId   , default: null, ref: 'back_api_endpoint' }],
+    endpoints   : [{ type: mongoose.Schema.Types.ObjectId   , default: null, ref: 'back_endpoint' }],
     test_mode   : { type: Boolean                           , default: false },
     
     created_at  : { type: Date                              , default: Date.now },

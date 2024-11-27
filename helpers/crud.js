@@ -1,7 +1,7 @@
 // =============================================================================
 // HELPERS
 // =============================================================================
-const h_response = require("../helpers/response");
+const h_response    = require("../helpers/response");
 /**
  * 
  * @param {*} model_name 
@@ -137,16 +137,24 @@ async function findDocuments(model_name, model_service, query = {}, fields = nul
 async function findDocument(model_name, model_service, query = {}, fields = null, options = null, formatDocument = undefined, additional_data_format = null) {
     
     try {
-        let document_result = await model_service.findOne(query, fields, options);
+        let document_result = { success: false, body: null };
+        if( options == null ){
+
+            document_result = await model_service.findOne(query, fields);
+        }
+        else{
+
+            document_result = await model_service.findOne(query, fields, options);
+        }
         
-        if( document_result.success && document_result.body ){
+        if( document_result.body != null ){
             
             if( formatDocument != undefined){
                 
                 let new_document = await formatDocument(document_result.body, additional_data_format);
                 if( new_document.success ){
                     
-                    all_documents.push(new_document.body);
+                    document_result.body = new_document.body;
                 }
             }
             return( h_response.request(true, document_result.body, 200, `Success: ${ model_name } Request`, `${ model_name } found successfully`) );
@@ -174,18 +182,15 @@ async function createDocument(model_name, model_service, query, create_data, exi
     try {
         let document_result = await model_service.findOne(query);
         
-        if( document_result.success && document_result.body && exist_document_error ){
+        if( document_result.success && document_result.body != null && exist_document_error ){
             
             return( h_response.request(false, document_result, 400, `Error: ${ model_name } Request`, `${ model_name } exist`) );
         }
-        else if( document_result.success && document_result.body && !exist_document_error ){
+        else if( document_result.success && document_result.body != null && !exist_document_error ){
             
-            let exist_document = h_response.request(true, document_created.body, 200, `Error: ${ model_name } Request`, `${ model_name } exist`);
-            exist_document.success = false;
-            exist_document.status = 400;
-            return( exist_document );
+            return( h_response.request(true, document_result.body, 200, `Success: ${ model_name } Request`, `${ model_name } exist`) );
         }
-        else if( !document_result.success && document_result.body == null ){
+        else if( document_result.body == null ){
             
             let document_created = await model_service.create(create_data);
             
@@ -220,17 +225,17 @@ async function updateDocument(model_name, model_service, query, update_data) {
     try {
         let document_updated = await model_service.update(query, update_data);
         
-        if( document_updated.success && document_updated.body ){
+        if( document_updated.body != null ){
             
             let document_result = await model_service.findOne(query);
             
-            if( document_result.success && document_result.body ){
+            if( document_result.body != null ){
                 
                 return( h_response.request(true, document_result.body, 200, `Success: ${ model_name } Request`, `${ model_name } updated successfully`) );
             }
             else{
                 
-                return( h_response.request(false, document_result, 400, `Error: ${ model_name } Request`, `${ model_name } not found`) );
+                return( h_response.request(false, document_updated, 400, `Error: ${ model_name } Request`, `${ model_name } not found`) );
             }
         }
         else{

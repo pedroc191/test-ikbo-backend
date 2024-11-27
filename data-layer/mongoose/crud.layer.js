@@ -157,6 +157,7 @@ class CrudLayer{
 			return ( { success: db_result ? true : false, body: db_result ? db_result : null, model_name: this.model_name } );
 		}
 		catch (db_error) {
+			console.log( db_error );
 			return ( { success: false, error: db_error, model_name: this.model_name } );
 		}
 	}

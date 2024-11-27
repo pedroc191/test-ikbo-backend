@@ -17,4 +17,4 @@ let endpointSchema = mongoose.Schema({
     status          : { type: String    , default: 'active' }
 });
 
-module.exports = mongoose.model( 'back_api_endpoint', endpointSchema );
+module.exports = mongoose.model( 'back_endpoint', endpointSchema );

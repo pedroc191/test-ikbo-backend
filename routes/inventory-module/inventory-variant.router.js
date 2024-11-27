@@ -23,8 +23,6 @@ app.post('/list', inventoryVariantController.post.listDocuments);
 
 app.post('/create', inventoryVariantController.post.createDocument);
 
-app.put('/update', inventoryVariantController.put.updateDocument);
-
 app.put('/update-status', inventoryVariantController.put.updateDocumentStatus);
 
 app.delete('/delete', inventoryVariantController.delete.deleteDocument);

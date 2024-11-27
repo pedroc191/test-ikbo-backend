@@ -17,7 +17,8 @@ const h_crud        = require('../../helpers/crud');
 // SERVICES
 // =============================================================================
 const { 
-    backApplicationService
+    backApplicationService,
+    backRoleService
 } = require('../../services/manager');
 // =============================================================================
 // REST FUNCTIONS
@@ -82,43 +83,55 @@ async function listDocuments(req, res){
 async function createDocument(req, res){
     
     try {
+
         let format_data = [
             h_format.objectValidField( 'name'       , h_validation.evalString( req.body.name, null )        , h_format.fields.types.string.name , h_format.fields.types.string.operators.not_equal                  , '' ),
             h_format.objectValidField( 'description', h_validation.evalString( req.body.description, null ) , h_format.fields.types.string.name , h_format.fields.types.string.operators.not_equal                  , '' ),
             h_format.objectValidField( 'host'       , h_validation.evalString( req.body.host, null )        , h_format.fields.types.string.name , h_format.fields.types.string.operators.not_equal                  , '' ),
-            h_format.objectValidField( 'endpoints'  , h_validation.evalArray( req.body.endpoints, null )    , h_format.fields.types.array.name  , h_format.fields.types.array.operators.length_greater_than_or_equal, 0 ),
+            h_format.objectValidField( 'role'       , h_validation.evalString( req.body.role, null )        , h_format.fields.types.string.name , h_format.fields.types.string.operators.not_equal                  , null ),
             h_format.objectValidField( 'test_mode'  , h_validation.evalBoolean( req.body.test_mode, false ) , h_format.fields.types.boolean.name, h_format.fields.types.boolean.operators.not_equal                 , null )
         ];
         format_data = h_validation.evalFields( req.body, format_data );
         
         if( format_data.is_valid ){
             
-            format_data.body_object.handle = format_data.body_object.name != null ? h_format.slug( format_data.body_object.name ) : null;
-            
-            let create_document = await h_crud.createDocument( 'Application', backApplicationService, { name: format_data.body_object.name }, format_data.body_object, false );
-            if (create_document.success ) {
-                
-                const token_login = jwt.sign( { 
-                    user    : create_document.body._id.toString(), 
-                    handle  : create_document.body.handle, 
-                    access  : { host: create_document.body.host, is_app: true }
-                }, credentials.encrypted.key_session );
-                
-                let application_updated = await backApplicationService.update({ _id: create_document.body._id }, { token: token_login });
-                
-                if( application_updated.success && application_updated.body != null ){
+            let find_query = h_format.findQuery( format_data.body_object.role );
+            let role_result = await h_crud.findDocument('Role', backRoleService, find_query, { _id: 1 });
+
+            if( role_result.success ){
+
+                format_data.body_object.role    = role_result.body._id;
+                format_data.body_object.handle  = format_data.body_object.name != null ? h_format.slug( format_data.body_object.name ) : null;
+
+                let create_document = await h_crud.createDocument( 'Application', backApplicationService, { handle: format_data.body_object.handle }, format_data.body_object, true );
+                if (create_document.success ) {
                     
-                    create_document.body.token = token_login;
-                    res.status(200).json( create_document );
+                    const token_login = jwt.sign( { 
+                        user    : create_document.body._id.toString(), 
+                        handle  : create_document.body.handle, 
+                        access  : { host: create_document.body.host, is_app: true }
+                    }, credentials.encrypted.key_session );
+                    
+                    let application_updated = await backApplicationService.update({ _id: create_document.body._id }, { token: token_login });
+                    
+                    if( application_updated.success && application_updated.body != null ){
+                        
+                        create_document.body.token = token_login;
+                        res.status(200).json( create_document );
+                    }
+                    else{
+                        
+                        res.status(400).send( h_response.request( false, application_updated, 400, 'Error: Request', 'Application Created, but not updated token' ) );
+                    }
                 }
-                else{
+                else {
                     
-                    res.status(400).send( h_response.request( false, application_updated, 400, 'Error: Request', 'Application Created, but not updated token' ) );
+                    res.status(400).send( create_document );
                 }
             }
-            else {
+            else{
                 
-                res.status(400).send( create_document );
+                res.status(400).send( role_result );
             }
         }
         else{
@@ -143,7 +156,7 @@ async function updateDocument(req, res){
             h_format.objectValidField( 'name'       , h_validation.evalString( req.body.name, null )        , h_format.fields.types.string.name , h_format.fields.types.string.operators.not_equal                  , null ),
             h_format.objectValidField( 'description', h_validation.evalString( req.body.description, null ) , h_format.fields.types.string.name , h_format.fields.types.string.operators.not_equal                  , null ),
             h_format.objectValidField( 'host'       , h_validation.evalString( req.body.host, null )        , h_format.fields.types.string.name , h_format.fields.types.string.operators.not_equal                  , null ),
-            h_format.objectValidField( 'endpoints'  , h_validation.evalArray( req.body.endpoints, null )    , h_format.fields.types.array.name  , h_format.fields.types.array.operators.length_greater_than_or_equal, 0 ),
+            h_format.objectValidField( 'role'       , h_validation.evalString( req.body.role, null )        , h_format.fields.types.string.name , h_format.fields.types.string.operators.not_equal                  , null ),
             h_format.objectValidField( 'test_mode'  , h_validation.evalBoolean( req.body.test_mode, false ) , h_format.fields.types.boolean.name, h_format.fields.types.boolean.operators.not_equal                 , null )
         ];
         format_data = h_validation.evalFields( {...req.body, id_handle: req.param.id_handle }, format_data );
@@ -155,7 +168,7 @@ async function updateDocument(req, res){
             
             let find_document = await h_crud.findDocument('Application', backApplicationService, find_query, { _id: 1 });
             if (find_document.success) {
-
+                
                 format_data.body_object.handle = format_data.body_object.name != null ? h_format.slug( format_data.body_object.name ) : null;
                 
                 const token_login = jwt.sign( { 

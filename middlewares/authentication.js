@@ -16,9 +16,7 @@ const h_validation   = require('../helpers/validation');
 // =============================================================================
 const { 
     backUserService, 
-    backApplicationService,
-    agentDiscountService,
-    backMarketplaceService,
+    backApplicationService
 } = require('../services/manager');
 // =============================================================================
 // EXPORTS

@@ -94,7 +94,7 @@ async function createDocument(req, res){
             
             format_data.body_object.handle = format_data.body_object.name != null ? h_format.slug( format_data.body_object.name ) : null;
             
-            let create_document = await h_crud.createDocument( 'Inventory Location', backInventoryLocationService, { name: format_data.body_object.name }, format_data.body_object, false );
+            let create_document = await h_crud.createDocument( 'Inventory Location', backInventoryLocationService, { handle: format_data.body_object.handle }, format_data.body_object, true );
             if (create_document.success ) {
                 
                 res.status(200).json( create_document );

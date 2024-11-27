@@ -16,4 +16,4 @@ let applicationSchema   = mongoose.Schema({
     deleted         : { type: Boolean                       , default: false },
     status          : { type: String                        , default: 'active' }
 });
-module.exports = mongoose.model( 'back_api_application', applicationSchema );
+module.exports = mongoose.model( 'back_application', applicationSchema );
