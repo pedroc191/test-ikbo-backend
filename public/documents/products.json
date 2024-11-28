@@ -2,28 +2,6 @@
     {
         "title": "Zucaritas Kellogg´s",
         "description": "Cereal de arroz inflado con sabor a chocolate. Es un alimento ideal para el desayuno, ya que es una fuente de energía y nutrientes. Además, es un alimento que aporta fibra, vitaminas y minerales. Es un alimento que aporta energía y nutrientes, por lo que es ideal para el desayuno. Es un alimento que aporta energía y nutrientes, por lo que es ideal para el desayuno. Es un alimento que aporta energía y nutrientes, por lo que es ideal para el desayuno. Es un alimento que aporta energía y nutrientes, por lo que es ideal para el desayuno.",
-        "images": [
-            {
-                "alt": "Zucaritas Kellogg's | 115g",
-                "src": "/products/zucaritas-kelloggs/115-g.webp"
-            },
-            {
-                "alt": "Zucaritas Kellogg's | 190g",
-                "src": "/products/zucaritas-kelloggs/190-g.webp"
-            },
-            {
-                "alt": "Zucaritas Kellogg's | 275g",
-                "src": "/products/zucaritas-kelloggs/275-g.webp"
-            },
-            {
-                "alt": "Zucaritas Kellogg's | 360g",
-                "src": "/products/zucaritas-kelloggs/360-g.webp"
-            },
-            {
-                "alt": "Zucaritas Kellogg's | 610g",
-                "src": "/products/zucaritas-kelloggs/610-g.webp"
-            }
-        ],
         "brand": "Kellogg´s",
         "product_type": "Cereal",
         "options": [
@@ -42,10 +20,6 @@
             {
                 "sku": "KLG-ZCT-115",
                 "title": "Zucaritas Kellogg´S Bolsa x 115 g",
-                "image": {
-                    "alt": "Zucaritas Kellogg's | 115g",
-                    "src": "/products/zucaritas-kelloggs/115-g.webp"
-                },
                 "brand": "Kellogg´s",
                 "product_type": "Cereal",
                 "price": 6000,
@@ -66,10 +40,6 @@
             {
                 "sku": "KLG-ZCT-190",
                 "title": "Zucaritas Kellogg´s 190 g Bolsa",
-                "image": {
-                    "alt": "Zucaritas Kellogg's | 190g",
-                    "src": "/products/zucaritas-kelloggs/190-g.webp"
-                },
                 "brand": "Kellogg´s",
                 "product_type": "Cereal",
                 "price": 11000,
@@ -90,10 +60,6 @@
             {
                 "sku": "KLG-ZCT-275",
                 "title": "Zucaritas Kellogg´S Family Pack x 275 g",
-                "image": {
-                    "alt": "Zucaritas Kellogg's | 275g",
-                    "src": "/products/zucaritas-kelloggs/275-g.webp"
-                },
                 "brand": "Kellogg´s",
                 "product_type": "Cereal",
                 "price": 18000,
@@ -114,10 +80,6 @@
             {
                 "sku": "KLG-ZCT-360",
                 "title": "Cereal Zucaritas Kellogg´s x 360 g",
-                "image": {
-                    "alt": "Zucaritas Kellogg's | 360g",
-                    "src": "/products/zucaritas-kelloggs/360-g.webp"
-                },
                 "brand": "Kellogg´s",
                 "product_type": "Cereal",
                 "price": 22000,
@@ -138,10 +100,6 @@
             {
                 "sku": "KLG-ZCT-610",
                 "title": "Zucaritas Kellogg´S Super Pack x 610 g",
-                "image": {
-                    "alt": "Zucaritas Kellogg's | 610g",
-                    "src": "/products/zucaritas-kelloggs/610-g.webp"
-                },
                 "brand": "Kellogg´s",
                 "product_type": "Cereal",
                 "price": 25000,
@@ -165,32 +123,6 @@
     {
         "title": "Choco Krispis Kellogg´s",
         "description": "Cereal de arroz inflado con sabor a chocolate. Es un alimento ideal para el desayuno, ya que es una fuente de energía y nutrientes. Además, es un alimento que aporta fibra, vitaminas y minerales. Es un alimento que aporta energía y nutrientes, por lo que es ideal para el desayuno. Es un alimento que aporta energía y nutrientes, por lo que es ideal para el desayuno. Es un alimento que aporta energía y nutrientes, por lo que es ideal para el desayuno. Es un alimento que aporta energía y nutrientes, por lo que es ideal para el desayuno.",
-        "images": [
-            {
-                "alt": "Choco Krispis Kellogg's | 115g",
-                "src": "/products/choco-krispis-kelloggs/115-g.webp"
-            },
-            {
-                "alt": "Choco Krispis Kellogg's | 190g",
-                "src": "/products/choco-krispis-kelloggs/190-g.webp"
-            },
-            {
-                "alt": "Choco Krispis Kellogg's | 360g",
-                "src": "/products/choco-krispis-kelloggs/360-g.webp"
-            },
-            {
-                "alt": "Choco Krispis Kellogg's | 410g",
-                "src": "/products/choco-krispis-kelloggs/410-g.webp"
-            },
-            {
-                "alt": "Choco Krispis Kellogg's | 570g",
-                "src": "/products/choco-krispis-kelloggs/570-g.webp"
-            },
-            {
-                "alt": "Choco Krispis Kellogg's | 630g",
-                "src": "/products/choco-krispis-kelloggs/630-g.webp"
-            }
-        ],
         "brand": "Kellogg´s",
         "product_type": "Cereal",
         "options": [
@@ -210,10 +142,6 @@
             {
                 "sku": "KLG-CHKRP-115",
                 "title": "Choco Krispis Kellogg´S Bolsa x 115 g",
-                "image": {
-                    "alt": "Choco Krispis Kellogg's | 115g",
-                    "src": "/products/choco-krispis-kelloggs/115-g.webp"
-                },
                 "brand": "Kellogg´s",
                 "product_type": "Cereal",
                 "price": 6000,
@@ -234,10 +162,6 @@
             {
                 "sku": "KLG-CHKRP-190",
                 "title": "Choco Krispis Kellogg´s 190 g Bolsa",
-                "image": {
-                    "alt": "Choco Krispis Kellogg's | 190g",
-                    "src": "/products/choco-krispis-kelloggs/190-g.webp"
-                },
                 "brand": "Kellogg´s",
                 "product_type": "Cereal",
                 "price": 11000,
@@ -258,10 +182,6 @@
             {
                 "sku": "KLG-CHKRP-360",
                 "title": "Choco Krispis Kellogg´S Family Pack x 360 g",
-                "image": {
-                    "alt": "Choco Krispis Kellogg's | 360g",
-                    "src": "/products/choco-krispis-kelloggs/360-g.webp"
-                },
                 "brand": "Kellogg´s",
                 "product_type": "Cereal",
                 "price": 18000,
@@ -282,10 +202,6 @@
             {
                 "sku": "KLG-CHKRP-410",
                 "title": "Cereal Choco Krispis Kellogg´s x 410 g",
-                "image": {
-                    "alt": "Choco Krispis Kellogg's | 410g",
-                    "src": "/products/choco-krispis-kelloggs/410-g.webp"
-                },
                 "brand": "Kellogg´s",
                 "product_type": "Cereal",
                 "price": 22000,
@@ -306,10 +222,6 @@
             {
                 "sku": "KLG-CHKRP-570",
                 "title": "Choco Krispis Kellogg´S Super Pack x 570 g",
-                "image": {
-                    "alt": "Choco Krispis Kellogg's | 570g",
-                    "src": "/products/choco-krispis-kelloggs/570-g.webp"
-                },
                 "brand": "Kellogg´s",
                 "product_type": "Cereal",
                 "price": 25000,
@@ -330,10 +242,6 @@
             {
                 "sku": "KLG-CHKRP-630",
                 "title": "Cereal Choco Krispis Kelloggs x 630 g",
-                "image": {
-                    "alt": "Choco Krispis Kellogg's | 630g",
-                    "src": "/products/choco-krispis-kelloggs/630-g.webp"
-                },
                 "brand": "Kellogg´s",
                 "product_type": "Cereal",
                 "price": 31000,

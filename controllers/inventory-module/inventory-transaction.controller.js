@@ -98,22 +98,26 @@ async function createDocument(req, res){
                         
                         let new_quantity    = ( format_data.body_object.transaction_type == 'in' ? format_data.body_object.quantity : format_data.body_object.quantity * -1 );
                         let variant_totals  = { total_stock: 0, total_weight: 0 };
+                        let expired_at_product = null;
                         for (const item_variant of find_product.body.variants) {
                             
                             let acum_quntity = 0;
+                            let expired_at_variant = null;
                             for (const item_inventory of item_variant.inventory_items) {
                                 
                                 if( !moment( item_inventory.expired_at ).isBefore( moment() ) ){
                                     
                                     acum_quntity += item_inventory.quantity;
+                                    expired_at_variant = expired_at_variant == null || ( expired_at_variant != null && moment( item_inventory.expired_at ).isBefore( expired_at_variant ) ) ? item_inventory.expired_at : expired_at_variant;
                                 }
                             }
+                            expired_at_product = expired_at_product == null || ( expired_at_product != null && moment( expired_at_variant ).isBefore( expired_at_product ) ) ? expired_at_variant : expired_at_product;
                             variant_totals.total_stock      += acum_quntity + ( find_inventory_variant.body.variant._id.toString() == item_variant._id.toString() ? new_quantity : 0 );
                             variant_totals.total_weight     += ( acum_quntity * item_variant.weight ) + ( find_inventory_variant.body.variant._id.toString() == item_variant._id.toString() ? ( new_quantity * item_variant.weight ) : 0 );
-                            await h_crud.updateDocument('Product Variant', backProductVariantsService, { _id: item_variant._id.toString() }, { inventory_quantity: acum_quntity });
+                            await h_crud.updateDocument('Product Variant', backProductVariantsService, { _id: item_variant._id.toString() }, { inventory_quantity: acum_quntity, expired_at: expired_at_variant });
                         }
                         let update_inventory_variant    = await h_crud.updateDocument('Inventory Variant', backInventoryVariantService, { _id: format_data.body_object.inventory_item }, { quantity: ( find_inventory_variant.body.quantity + new_quantity ) });
-                        let update_product              = await h_crud.updateDocument('Product', backProductService, { _id: find_product.body._id }, { total_stock: variant_totals.total_stock, total_weight: variant_totals.total_weight });
+                        let update_product              = await h_crud.updateDocument('Product', backProductService, { _id: find_product.body._id }, { total_stock: variant_totals.total_stock, total_weight: variant_totals.total_weight, expired_at: expired_at_product });
                         
                         if ( update_product.success && update_inventory_variant.success ) {
                             

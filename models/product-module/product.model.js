@@ -4,22 +4,6 @@ let productSchema = mongoose.Schema({
     title               : { type: String                            , default: null },
     description         : { type: String                            , default: null },
     handle              : { type: String                            , default: null },
-    images              : { type: [{
-        desktop : { type: { 
-            alt             : { type: String, default: null }, 
-            src             : { type: String, default: null },
-            width           : { type: Number, default: 1440 }, //1083
-            height          : { type: Number, default: 1440 }, //1440
-            sizes           : [{ type: Number, default: [1600, 1400, 1200] }]
-        }, default: null },
-        mobile  : { type: { 
-            alt             : { type: String, default: null }, 
-            src             : { type: String, default: null }, 
-            width           : { type: Number, default: 480 }, //480
-            height          : { type: Number, default: 480 }, //360
-            sizes           : [{ type: Number, default: [1000, 800, 700, 600] }]
-        }, default: null },
-    }], default: [] },
     brand               : { type: {
         name    : { type: String, default: null },
         handle  : { type: String, default: null }

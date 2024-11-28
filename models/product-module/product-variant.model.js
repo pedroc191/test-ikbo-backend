@@ -19,26 +19,10 @@ let productVariantSchema = mongoose.Schema({
         handle  : { type: String , default: null }, 
         value   : { type: String , default: null },
     }], default: [] },
-    image               : { type: {
-        desktop : { type: { 
-            alt             : { type: String, default: null }, 
-            src             : { type: String, default: null },
-            width           : { type: Number, default: 1440 }, //1083
-            height          : { type: Number, default: 1440 }, //1440
-            sizes           : [{ type: Number, default: [1600, 1400, 1200] }]
-        }, default: null },
-        mobile  : { type: { 
-            alt             : { type: String, default: null }, 
-            src             : { type: String, default: null }, 
-            width           : { type: Number, default: 480 }, //480
-            height          : { type: Number, default: 480 }, //360
-            sizes           : [{ type: Number, default: [1000, 800, 700, 600] }]
-        }, default: null },
-    }, default: null },
     grams               : { type: Number                            , default: 0 },
     weight              : { type: Number                            , default: 0 },
-    weight_unit         : { type: String                            , default: null },
-    inventory_policy    : { type: String                            , default: null },
+    weight_unit         : { type: String                            , default: 'kg' },
+    inventory_policy    : { type: String                            , default: 'deny' },
     requires_shipping   : { type: Boolean                           , default: true },
     inventory_quantity  : { type: Number                            , default: 0 },
     expired_at          : { type: Date                              , default: Date.now },

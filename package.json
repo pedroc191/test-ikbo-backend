@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
 		"start": "node ./bin/api",
-		"api": "node ./bin/api",
-		"job": "node ./bin/job"
+		"api": "node ./bin/api"
   },
   "dependencies": {
     "debug": "~2.6.9",
