@@ -1,4 +1,5 @@
 module.exports = {
+    seedController                  : require('../config-module/seed.controller'),
     applicationController           : require('../config-module/application.controller'),
     endpointController              : require('../config-module/endpoint.controller'),
     roleController                  : require('../config-module/role.controller'),

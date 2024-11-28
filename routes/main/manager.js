@@ -2,6 +2,7 @@ const router = require('express').Router();
 
 const userRouter                    = require('../user-module/user.router');
 const roleRouter                    = require('../config-module/role.router');
+const seedRouter                    = require('../config-module/seed.router');
 const applicationRouter             = require('../config-module/application.router');
 const endpointRouter                = require('../config-module/endpoint.router');
 
@@ -12,6 +13,7 @@ const inventoryTransactionRouter    = require('../inventory-module/inventory-tra
 
 router.use( '/users'				    , userRouter );
 router.use( '/roles'				    , roleRouter );
+router.use( '/seeds'		            , seedRouter );
 router.use( '/applications'		        , applicationRouter );
 router.use( '/endpoints'			    , endpointRouter );
 
